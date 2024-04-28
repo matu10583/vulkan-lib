@@ -45,6 +45,11 @@ namespace VulkanWrapper {
 		);
 	}
 
+	void DeviceHandle::GetDeviceQueue(uint32_t _family_idx, uint32_t _idx, QueueHandle* _pHandle)
+	{
+		vkGetDeviceQueue(m_vkHandle, _family_idx, _idx, _pHandle->VulkanHandleData());
+	}
+
 
 	Device::Device()
 	{
@@ -52,7 +57,6 @@ namespace VulkanWrapper {
 
 	Device::~Device()
 	{
-		m_device.Destroy();
 	}
 
 	bool Device::Init(
@@ -82,6 +86,16 @@ namespace VulkanWrapper {
 		);
 
 		return true;
+	}
+
+	void Device::Destroy()
+	{
+		m_device.Destroy();
+	}
+
+	void Device::GetQueue(uint32_t _family_idx, uint32_t _idx, Queue* _pQueue)
+	{
+		m_device.GetDeviceQueue(_family_idx, _idx, &_pQueue->m_queue);
 	}
 
 }

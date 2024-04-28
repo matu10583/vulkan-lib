@@ -1,6 +1,7 @@
 #include "VulkanWrapper/QueueFamilyIndices.h"
+#include "VulkanWrapper/Surface.h"
 namespace VulkanWrapper{
-	QueueFamilyIndices::QueueFamilyIndices(PhysicalDeviceHandle _handle)
+	QueueFamilyIndices::QueueFamilyIndices(PhysicalDeviceHandle _handle, SurfaceHandle _surface)
 		:m_availableFlag(0)
 		,m_indices(UINT32_MAX)
 	{
@@ -17,6 +18,15 @@ namespace VulkanWrapper{
 				m_availableFlag |= QueueFamilyTypeBit::GRAPHICS_BIT;
 				m_indices[QueueFamilyType::GRAPHICS] = i;
 			}
+			VkBool32 presentSupport = false;
+			vkGetPhysicalDeviceSurfaceSupportKHR(_handle.GetVulkanHandle(), i, _surface.GetVulkanHandle(), &presentSupport);
+			if (!HasQueue(QueueFamilyType::PRESENT) &&
+				presentSupport) {
+				m_availableFlag |= QueueFamilyTypeBit::PRESENT_BIT;
+				m_indices[QueueFamilyType::PRESENT] = i;
+			}
+
+			if (IsComplete()) break;
 		}
 	}
 	bool QueueFamilyIndices::HasQueue(QueueFamilyType t) const
@@ -31,6 +41,10 @@ namespace VulkanWrapper{
 			return UINT32_MAX;
 		}
 		return m_indices[t];
+	}
+	bool QueueFamilyIndices::IsComplete() const
+	{
+		return  (m_availableFlag & QueueFamilyTypeBit::ALL) == QueueFamilyTypeBit::ALL;
 	}
 }
 

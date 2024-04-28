@@ -129,6 +129,12 @@
     <ClInclude Include="include\Lib\Container\String.h">
       <Filter>ヘッダー ファイル\Lib\Container</Filter>
     </ClInclude>
+    <ClInclude Include="include\VulkanWrapper\Queue.h">
+      <Filter>ヘッダー ファイル\VulkanWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanWrapper\Surface.h">
+      <Filter>ヘッダー ファイル\VulkanWrapper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VulkanFrameWork.cpp">
@@ -184,6 +190,12 @@
     </ClCompile>
     <ClCompile Include="src\Lib\Container\String.cpp">
       <Filter>ソース ファイル\Lib\Container</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanWrapper\Queue.cpp">
+      <Filter>ソース ファイル\VulkanWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanWrapper\Surface.cpp">
+      <Filter>ソース ファイル\VulkanWrapper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -155,6 +155,8 @@
     <ClInclude Include="include\VulkanWrapper\DebugUtilsMessengerCreateInfo.h" />
     <ClInclude Include="include\Lib\Utility\Logger.h" />
     <ClInclude Include="include\Lib\Container\Array.h" />
+    <ClInclude Include="include\VulkanWrapper\Queue.h" />
+    <ClInclude Include="include\VulkanWrapper\Surface.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Lib\Container\IVector.cpp" />
@@ -173,6 +175,8 @@
     <ClCompile Include="src\VulkanWrapper\DebugUtilsMessengerCreateInfo.cpp" />
     <ClCompile Include="src\Lib\Utility\Logger.cpp" />
     <ClCompile Include="src\Lib\Container\Array.cpp" />
+    <ClCompile Include="src\VulkanWrapper\Queue.cpp" />
+    <ClCompile Include="src\VulkanWrapper\Surface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VulkanFrameWork.rc" />

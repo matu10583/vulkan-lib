@@ -158,14 +158,14 @@ namespace Lib {
 		{
 			if (Length() == size) return;
 			if (Length() > size) {
-				for (uint32_t i = size - 1; i < Length(); i++) {
+				for (size_type i = size - 1; i < Length(); i++) {
 					alloc_traits::destroy(m_allocator, m_pFirst + i);
 				}
 				m_pEnd = m_pFirst + size;
 				return;
 			}
 			Reserve(size);
-			for (uint32_t i = Length(); i < size; i++) {
+			for (size_type i = Length(); i < size; i++) {
 				alloc_traits::construct(m_allocator, m_pFirst + i);
 			}
 			m_pEnd = m_pFirst + size;

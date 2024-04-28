@@ -2,6 +2,7 @@
 #include "VulkanWrapper/VulkanHandleBase.h"
 #include <vulkan/vulkan.h>
 #include "VulkanWrapper/Instance.h"
+#include "VulkanWrapper/Queue.h"
 namespace VulkanWrapper{
 	class DeviceHandle: public VulkanHandleBase<VkDevice>
 	{
@@ -19,6 +20,8 @@ namespace VulkanWrapper{
 			uint32_t layerCount
 		);
 		void Destroy();
+
+		void GetDeviceQueue(uint32_t _family_idx, uint32_t _idx, QueueHandle* _pHandle);
 	private:
 
 	};
@@ -38,6 +41,10 @@ public:
 		char const** ppEnabledLayers,
 		uint32_t layerCount
 	);
+
+	void Destroy();
+	void GetQueue(uint32_t _family_idx, uint32_t _idx, Queue* _pQueue);
+
 private:
 	PhysicalDeviceHandle m_phys;
 	DeviceHandle m_device;

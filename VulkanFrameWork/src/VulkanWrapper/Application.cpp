@@ -1,3 +1,4 @@
+#define VK_USE_PLATFORM_WIN32_KHR
 #include "VulkanWrapper/Application.h"
 #include "VulkanWrapper/Macro.h"
 #include "Lib/Container/StaticVector.h"
@@ -13,7 +14,7 @@ namespace {
 		VkDebugUtilsMessageTypeFlagsEXT messageType,
 		const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
 		void* pUserData) {
-		DBG_PRTF("validation layer: %s", pCallbackData->pMessage);
+		DBG_PRTF("%s\n", pCallbackData->pMessage);
 
 		return VK_FALSE;
 	}
@@ -27,13 +28,15 @@ VulkanWrapper::Application::~Application()
 {
 }
 
-bool VulkanWrapper::Application::Init()
+bool VulkanWrapper::Application::Init(HWND _hwnd, HINSTANCE _hinst)
 {
 	char const* pLayers[] = {
 		 "VK_LAYER_KHRONOS_validation"
 	};
 	char const* pExtensions[] = {
-		VK_EXT_DEBUG_UTILS_EXTENSION_NAME
+		VK_EXT_DEBUG_UTILS_EXTENSION_NAME,
+		VK_KHR_SURFACE_EXTENSION_NAME,
+		VK_KHR_WIN32_SURFACE_EXTENSION_NAME
 	};
 	m_instance.Init(
 		VK_API_VERSION_1_0,
@@ -54,14 +57,27 @@ bool VulkanWrapper::Application::Init()
 		selectedDevice = physDevice;
 		break;
 	}
-	VkPhysicalDeviceFeatures feats{};
-	Lib::Container::Array<DeviceQueueCreateInfo, 1> createInfo{};
 
-	auto queueFamilyIndices = QueueFamilyIndices(selectedDevice);
+	m_surface.Init(
+		m_instance.GetHandle(), _hwnd, _hinst
+	);
+
+	VkPhysicalDeviceFeatures feats{};
+	Lib::Container::StaticVector<DeviceQueueCreateInfo,2> createInfo{};
+
+	auto queueFamilyIndices = QueueFamilyIndices(selectedDevice, m_surface);
+	float queuePri = 1.0;
+	createInfo.Resize(1);
 	createInfo[0].queueFamilyIndex = queueFamilyIndices.GetIndex(QueueFamilyType::GRAPHICS);
 	createInfo[0].queueCount = 1;
-	float queuePri = 1.0;
 	createInfo[0].pQueuePriorities = &queuePri;
+	uint32_t preIdx = queueFamilyIndices.GetIndex(QueueFamilyType::PRESENT);
+	if (createInfo[0].queueFamilyIndex != preIdx) {
+		createInfo.Resize(2);
+		createInfo[1].queueFamilyIndex = preIdx;
+		createInfo[1].queueCount = 1;
+		createInfo[1].pQueuePriorities = &queuePri;
+	}
 
 	m_device.Init(
 		selectedDevice,
@@ -72,7 +88,17 @@ bool VulkanWrapper::Application::Init()
 		pLayers, _countof(pLayers)
 		);
 
+	m_device.GetQueue(queueFamilyIndices.GetIndex(QueueFamilyType::GRAPHICS), 0, &m_graphicQueue);
+	m_device.GetQueue(queueFamilyIndices.GetIndex(QueueFamilyType::PRESENT), 0, &m_presentQueue);
+
     return true;
+}
+
+void VulkanWrapper::Application::Term()
+{
+	m_device.Destroy();
+	m_surface.Destroy(m_instance.GetHandle());
+	m_instance.Destroy();
 }
 
 uint32_t VulkanWrapper::Application::VkAppVersion() const

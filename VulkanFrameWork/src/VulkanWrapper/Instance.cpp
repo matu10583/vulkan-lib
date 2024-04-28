@@ -79,7 +79,6 @@ VulkanWrapper::Instance::Instance()
 
 VulkanWrapper::Instance::~Instance()
 {
-	m_instance.Destroy();
 }
 
 bool VulkanWrapper::Instance::Init(
@@ -145,7 +144,11 @@ bool VulkanWrapper::Instance::Init(
 
 void VulkanWrapper::Instance::Destroy()
 {
+#ifdef _DEBUG
+	m_debugMessanger.Destroy(m_instance);
+#endif // _DEBUG
 	m_instance.Destroy();
+
 }
 
 VulkanWrapper::InstanceHandle VulkanWrapper::Instance::GetHandle() const

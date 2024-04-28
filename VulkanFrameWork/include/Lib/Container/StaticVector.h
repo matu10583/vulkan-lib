@@ -33,6 +33,8 @@ public:
 	const_iterator CEnd()const ;
 	pointer Data();
 	void Resize(uint32_t size);
+	uint32_t Find(bool (*func)(T const&))const;
+	uint32_t Find(T const&)const;
 private:
 	value_type m_array[Size];
 	pointer m_pEnd;
@@ -121,6 +123,32 @@ inline void StaticVector<T, Size>::Resize(uint32_t size)
 		throw std::out_of_range("excess capacity");
 	}
 	m_pEnd = Data() + size;
+}
+
+template<typename T, std::size_t Size>
+inline uint32_t StaticVector<T, Size>::Find(bool (*func)(T const&)) const
+{
+	uint32_t i = 0;
+	for (auto* itr = Begin(); itr < End(); itr++) {
+		if (func(*itr)) {
+			return i;
+		}
+		i++;
+	}
+	return UINT32_MAX;
+}
+
+template<typename T, std::size_t Size>
+inline uint32_t StaticVector<T, Size>::Find(T const& e) const
+{
+	uint32_t i = 0;
+	for (auto* itr = Begin(); itr < End(); itr++) {
+		if (*itr==e) {
+			return i;
+		}
+		i++;
+	}
+	return UINT32_MAX;
 }
 
 template<typename T, std::size_t Size>

@@ -2,6 +2,8 @@
 #include "VulkanWrapper/IApplication.h"
 #include "VulkanWrapper/Instance.h"
 #include "VulkanWrapper/Device.h"
+#include "VulkanWrapper/Queue.h"
+#include "VulkanWrapper/Surface.h"
 
 namespace VulkanWrapper {
 	class Application 
@@ -10,7 +12,8 @@ namespace VulkanWrapper {
 	public:
 		Application();
 		~Application();
-		bool Init();
+		bool Init(HWND _hwnd, HINSTANCE _hinst);
+		void Term();
 
 		// IApplication ÇâÓÇµÇƒåpè≥Ç≥ÇÍÇ‹ÇµÇΩ
 		uint32_t VkAppVersion() const override;
@@ -24,6 +27,9 @@ namespace VulkanWrapper {
 	private:
 		Instance m_instance;
 		Device m_device;
+		Queue m_graphicQueue;
+		Queue m_presentQueue;
+		SurfaceHandle m_surface;
 	};
 }
 
