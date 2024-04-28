@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -137,25 +137,42 @@
     <ClInclude Include="include\Lib\Container\StaticString.h" />
     <ClInclude Include="include\Lib\Container\StaticVector.h" />
     <ClInclude Include="include\Lib\Container\Vector.h" />
-    <ClInclude Include="include\VulkanWrapper\HandleWrapper.h" />
+    <ClInclude Include="include\Lib\Utility\Math.h" />
+    <ClInclude Include="include\VulkanWrapper\Device.h" />
+    <ClInclude Include="include\VulkanWrapper\DeviceQueueCreateInfo.h" />
+    <ClInclude Include="include\VulkanWrapper\ExtFunctionDispatchable.h" />
     <ClInclude Include="include\VulkanWrapper\IApplication.h" />
     <ClInclude Include="include\VulkanWrapper\Application.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="include\VulkanWrapper\IInstance.h" />
     <ClInclude Include="include\VulkanWrapper\Instance.h" />
+    <ClInclude Include="include\VulkanWrapper\QueueFamilyIndices.h" />
+    <ClInclude Include="include\VulkanWrapper\VulkanHandleBase.h" />
     <ClInclude Include="include\VulkanWrapper\Macro.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="VulkanFrameWork.h" />
+    <ClInclude Include="include\VulkanWrapper\DebugMessengerHandle.h" />
+    <ClInclude Include="include\VulkanWrapper\DebugUtilsMessengerCreateInfo.h" />
+    <ClInclude Include="include\Lib\Utility\Logger.h" />
+    <ClInclude Include="include\Lib\Container\Array.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Lib\Container\IVector.cpp" />
     <ClCompile Include="src\Lib\Container\StaticString.cpp" />
     <ClCompile Include="src\Lib\Container\StaticVector.cpp" />
     <ClCompile Include="src\Lib\Container\Vector.cpp" />
+    <ClCompile Include="src\Lib\Utility\Math.cpp" />
+    <ClCompile Include="src\VulkanWrapper\Device.cpp" />
+    <ClCompile Include="src\VulkanWrapper\DeviceQueueCreateInfo.cpp" />
+    <ClCompile Include="src\VulkanWrapper\ExtFunctionDispatchable.cpp" />
     <ClCompile Include="src\VulkanWrapper\Instance.cpp" />
     <ClCompile Include="src\VulkanWrapper\Application.cpp" />
+    <ClCompile Include="src\VulkanWrapper\QueueFamilyIndices.cpp" />
     <ClCompile Include="VulkanFrameWork.cpp" />
+    <ClCompile Include="src\VulkanWrapper\DebugMessengerHandle.cpp" />
+    <ClCompile Include="src\VulkanWrapper\DebugUtilsMessengerCreateInfo.cpp" />
+    <ClCompile Include="src\Lib\Utility\Logger.cpp" />
+    <ClCompile Include="src\Lib\Container\Array.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VulkanFrameWork.rc" />

@@ -2,36 +2,37 @@
 #include <cstdint>
 #include <utility>
 #include <stdexcept>
-#include "Lib/Container/IVector.h"
 namespace Lib{
 namespace Container{
 	template<typename T, std::size_t Size>
 class StaticVector
-	:public IVector<T, decltype(Size)>
 {
-	using typename  IVector<T, decltype(Size)>::size_type;
-	using typename  IVector<T, size_type>::value_type;
-	using typename  IVector<T, size_type>::pointer;
-	using typename  IVector<T, size_type>::const_pointer;
-	using typename  IVector<T, size_type>::reference;
-	using typename  IVector<T, size_type>::const_reference;
-	using typename  IVector<T, size_type>::iterator;
-	using typename  IVector<T, size_type>::const_iterator;
-	using typename  IVector<T, size_type>::reverse_iterator;
-	using typename  IVector<T, size_type>::const_reverse_iterator;
+	using value_type = T;
+	using pointer = T*;
+	using const_pointer = T const*;
+	using reference = value_type&;
+	using const_reference = value_type const&;
+	using size_type = size_t;
+	using iterator = pointer;
+	using const_iterator = const_pointer;
+	using reverse_iterator = std::reverse_iterator<iterator>;
+	using const_reverse_iterator = std::reverse_iterator<const_iterator>;
+	using difference_type = std::ptrdiff_t;
 public:
 	StaticVector();
 	~StaticVector();
-	void EmplaceBack(T&& elem)override;
-	reference operator[](size_type idx)override;
-	const_reference operator[](size_type idx)const override;
-	void Clear()override;
-	size_type Capacity()const override;
-	size_type Length()const override;
-	iterator Begin() override;
-	iterator End() override;
-	const_iterator CBegin()const override;
-	const_iterator CEnd()const override;
+	void EmplaceBack(T&& elem);
+	reference operator[](size_type idx);
+	const_reference operator[](size_type idx)const ;
+	void Clear();
+	size_type Capacity()const ;
+	size_type Length()const ;
+	iterator Begin() ;
+	iterator End() ;
+	const_iterator CBegin()const ;
+	const_iterator CEnd()const ;
+	pointer Data();
+	void Resize(uint32_t size);
 private:
 	value_type m_array[Size];
 	pointer m_pEnd;
@@ -111,6 +112,22 @@ inline typename StaticVector<T, Size>::const_iterator
 StaticVector<T, Size>::CEnd()const
 {
 	return m_pEnd;
+}
+
+template<typename T, std::size_t Size>
+inline void StaticVector<T, Size>::Resize(uint32_t size)
+{
+	if (size > Capacity()) {
+		throw std::out_of_range("excess capacity");
+	}
+	m_pEnd = Data() + size;
+}
+
+template<typename T, std::size_t Size>
+inline typename StaticVector<T, Size>::pointer
+StaticVector<T, Size>::Data()
+{
+	return static_cast<T*>(m_array);
 }
 }
 }

@@ -25,22 +25,19 @@ namespace Lib{
 			char& operator[](size_t idx);
 			char const& operator[](size_t idx)const;
 		private:
-			//null終端をカバー
+			//null終端をカバー.最後の一字に終端を入れる
 			char m_chars[Size + 1];
-			char* m_pNullTerm;
 		};
 		template<size_t Size>
 		inline StaticString<Size>::StaticString()
 		{
-			m_pNullTerm = &(m_chars[0]);
-			*m_pNullTerm = '\0';
+			m_chars[0] = '\0';
 		}
 		template<size_t Size>
 		inline StaticString<Size>::StaticString(char const* pSrc)
 		{
 			bool result = Copy(pSrc);
 			assert(result && "文字列キャパシティが足りない");
-			m_pNullTerm = &(m_chars[strlen(pSrc)]);
 		}
 		template<size_t Size>
 		inline StaticString<Size>::~StaticString()
@@ -49,7 +46,7 @@ namespace Lib{
 		template<size_t Size>
 		inline size_t StaticString<Size>::Length() const
 		{
-			return m_pNullTerm - CStr();
+			return strlen(CStr());
 		}
 		template<size_t Size>
 		inline bool StaticString<Size>::Copy(char const* pSrc)
@@ -82,12 +79,12 @@ namespace Lib{
 		template<size_t Size>
 		inline typename StaticString<Size>::iterator StaticString<Size>::End() const
 		{
-			return m_pNullTerm;
+			return CStr() + strlen(CStr());
 		}
 		template<size_t Size>
 		inline typename StaticString<Size>::const_iterator StaticString<Size>::CEnd() const
 		{
-			return m_pNullTerm;
+			return CStr() + strlen(CStr());
 		}
 		template<size_t Size>
 		inline char& StaticString<Size>::operator[](size_t idx)

@@ -1,6 +1,7 @@
 #pragma once
 #include "VulkanWrapper/IApplication.h"
 #include "VulkanWrapper/Instance.h"
+#include "VulkanWrapper/Device.h"
 
 namespace VulkanWrapper {
 	class Application 
@@ -22,6 +23,7 @@ namespace VulkanWrapper {
 
 	private:
 		Instance m_instance;
+		Device m_device;
 	};
 }
 

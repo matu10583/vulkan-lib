@@ -33,6 +33,7 @@ public:
 	virtual const_iterator CEnd()const = 0;
 
 	virtual size_type Length()const = 0;
+	virtual pointer Data() = 0;
 
 };
 }
