@@ -98,4 +98,14 @@ namespace VulkanWrapper {
 		m_device.GetDeviceQueue(_family_idx, _idx, &_pQueue->m_queue);
 	}
 
+	DeviceHandle Device::GetHandle() const
+	{
+		return m_device;
+	}
+
+	PhysicalDeviceHandle Device::GetPhysicalDevice() const
+	{
+		return m_phys;
+	}
+
 }

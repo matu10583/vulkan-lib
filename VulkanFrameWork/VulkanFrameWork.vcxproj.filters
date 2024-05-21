@@ -55,6 +55,21 @@
     <Filter Include="ヘッダー ファイル\VulkanWrapper\Helper">
       <UniqueIdentifier>{5ed4131e-48a9-4aa9-ba29-0c696fa373b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\VulkanWrapper\HandleWrapper\Image">
+      <UniqueIdentifier>{6afe6221-8df0-4106-a995-2756f884cbde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\VulkanWrapper\Others">
+      <UniqueIdentifier>{3301b717-b542-423e-b907-da160e77e6a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\VulkanWrapper\Others">
+      <UniqueIdentifier>{5ea32f8d-7358-4127-b117-ab857b98c09c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\VulkanWrapper\HandleWrapper\Image">
+      <UniqueIdentifier>{69e619fd-350b-4f60-b1d3-8f9d5b002cab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="シェーダーファイル">
+      <UniqueIdentifier>{99e76c92-3edd-4a29-aeee-c8ede018dcbd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -73,9 +88,6 @@
       <Filter>ヘッダー ファイル\VulkanWrapper</Filter>
     </ClInclude>
     <ClInclude Include="include\VulkanWrapper\IApplication.h">
-      <Filter>ヘッダー ファイル\VulkanWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="include\VulkanWrapper\Macro.h">
       <Filter>ヘッダー ファイル\VulkanWrapper</Filter>
     </ClInclude>
     <ClInclude Include="include\Lib\Container\IVector.h">
@@ -108,17 +120,8 @@
     <ClInclude Include="include\VulkanWrapper\QueueFamilyIndices.h">
       <Filter>ヘッダー ファイル\VulkanWrapper\Helper</Filter>
     </ClInclude>
-    <ClInclude Include="include\VulkanWrapper\ExtFunctionDispatchable.h">
-      <Filter>ヘッダー ファイル\VulkanWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="include\VulkanWrapper\DebugMessengerHandle.h">
-      <Filter>ヘッダー ファイル\VulkanWrapper</Filter>
-    </ClInclude>
     <ClInclude Include="include\VulkanWrapper\DebugUtilsMessengerCreateInfo.h">
       <Filter>ヘッダー ファイル\VulkanWrapper\CreateInfo</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Lib\Logger.h">
-      <Filter>ヘッダー ファイル\Lib</Filter>
     </ClInclude>
     <ClInclude Include="include\Lib\Utility\Logger.h">
       <Filter>ヘッダー ファイル\Lib\Utility</Filter>
@@ -126,13 +129,61 @@
     <ClInclude Include="include\Lib\Container\Array.h">
       <Filter>ヘッダー ファイル\Lib\Container</Filter>
     </ClInclude>
-    <ClInclude Include="include\Lib\Container\String.h">
-      <Filter>ヘッダー ファイル\Lib\Container</Filter>
+    <ClInclude Include="include\VulkanWrapper\DebugMessengerHandle.h">
+      <Filter>ヘッダー ファイル\VulkanWrapper\HandleWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanWrapper\ExtFunctionDispatchable.h">
+      <Filter>ヘッダー ファイル\VulkanWrapper\HandleWrapper</Filter>
     </ClInclude>
     <ClInclude Include="include\VulkanWrapper\Queue.h">
-      <Filter>ヘッダー ファイル\VulkanWrapper</Filter>
+      <Filter>ヘッダー ファイル\VulkanWrapper\HandleWrapper</Filter>
     </ClInclude>
     <ClInclude Include="include\VulkanWrapper\Surface.h">
+      <Filter>ヘッダー ファイル\VulkanWrapper\HandleWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lib\Container\RBTree.h">
+      <Filter>ヘッダー ファイル\Lib\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lib\Container\Set.h">
+      <Filter>ヘッダー ファイル\Lib\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanWrapper\SwapChain.h">
+      <Filter>ヘッダー ファイル\VulkanWrapper\HandleWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanWrapper\Image.h">
+      <Filter>ヘッダー ファイル\VulkanWrapper\HandleWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanWrapper\ImageView.h">
+      <Filter>ヘッダー ファイル\VulkanWrapper\HandleWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanWrapper\SwapChainImage.h">
+      <Filter>ヘッダー ファイル\VulkanWrapper\HandleWrapper\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanWrapper\SwapChainSupportDetails.h">
+      <Filter>ヘッダー ファイル\VulkanWrapper\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanWrapper\InstanceLayerSupport.h">
+      <Filter>ヘッダー ファイル\VulkanWrapper\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanWrapper\InstanceExtensionSupport.h">
+      <Filter>ヘッダー ファイル\VulkanWrapper\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanWrapper\DeviceExtensionSupport.h">
+      <Filter>ヘッダー ファイル\VulkanWrapper\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanWrapper\Macro.h">
+      <Filter>ヘッダー ファイル\VulkanWrapper\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanWrapper\Defines.h">
+      <Filter>ヘッダー ファイル\VulkanWrapper\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lib\Utility\File.h">
+      <Filter>ヘッダー ファイル\Lib\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lib\Utility\IFileSystem.h">
+      <Filter>ヘッダー ファイル\Lib\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanWrapper\ShaderModule.h">
       <Filter>ヘッダー ファイル\VulkanWrapper</Filter>
     </ClInclude>
   </ItemGroup>
@@ -170,31 +221,64 @@
     <ClCompile Include="src\VulkanWrapper\QueueFamilyIndices.cpp">
       <Filter>ソース ファイル\VulkanWrapper\Helper</Filter>
     </ClCompile>
-    <ClCompile Include="src\VulkanWrapper\ExtFunctionDispatchable.cpp">
-      <Filter>ソース ファイル\VulkanWrapper</Filter>
-    </ClCompile>
-    <ClCompile Include="src\VulkanWrapper\DebugMessengerHandle.cpp">
-      <Filter>ソース ファイル\VulkanWrapper</Filter>
-    </ClCompile>
-    <ClCompile Include="src\VulkanWrapper\DebugUtilsMessengerCreateInfo.cpp">
-      <Filter>ソース ファイル\VulkanWrapper</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Lib\Logger.cpp">
-      <Filter>ソース ファイル\Lib</Filter>
-    </ClCompile>
     <ClCompile Include="src\Lib\Utility\Logger.cpp">
       <Filter>ソース ファイル\Lib\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\Lib\Container\Array.cpp">
       <Filter>ソース ファイル\Lib\Container</Filter>
     </ClCompile>
-    <ClCompile Include="src\Lib\Container\String.cpp">
-      <Filter>ソース ファイル\Lib\Container</Filter>
+    <ClCompile Include="src\VulkanWrapper\Surface.cpp">
+      <Filter>ソース ファイル\VulkanWrapper\HandleWrapper</Filter>
     </ClCompile>
     <ClCompile Include="src\VulkanWrapper\Queue.cpp">
-      <Filter>ソース ファイル\VulkanWrapper</Filter>
+      <Filter>ソース ファイル\VulkanWrapper\HandleWrapper</Filter>
     </ClCompile>
-    <ClCompile Include="src\VulkanWrapper\Surface.cpp">
+    <ClCompile Include="src\VulkanWrapper\DebugUtilsMessengerCreateInfo.cpp">
+      <Filter>ソース ファイル\VulkanWrapper\CreateInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanWrapper\DebugMessengerHandle.cpp">
+      <Filter>ソース ファイル\VulkanWrapper\HandleWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanWrapper\ExtFunctionDispatchable.cpp">
+      <Filter>ソース ファイル\VulkanWrapper\HandleWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Lib\Container\RBTree.cpp">
+      <Filter>ソース ファイル\Lib\Container</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Lib\Container\Set.cpp">
+      <Filter>ソース ファイル\Lib\Container</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanWrapper\Defines.cpp">
+      <Filter>ソース ファイル\VulkanWrapper\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanWrapper\DeviceExtensionSupport.cpp">
+      <Filter>ソース ファイル\VulkanWrapper\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanWrapper\Image.cpp">
+      <Filter>ソース ファイル\VulkanWrapper\HandleWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanWrapper\ImageView.cpp">
+      <Filter>ソース ファイル\VulkanWrapper\HandleWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanWrapper\SwapChainImage.cpp">
+      <Filter>ソース ファイル\VulkanWrapper\HandleWrapper\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanWrapper\SwapChain.cpp">
+      <Filter>ソース ファイル\VulkanWrapper\HandleWrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanWrapper\SwapChainSupportDetails.cpp">
+      <Filter>ソース ファイル\VulkanWrapper\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanWrapper\InstanceLayerSupport.cpp">
+      <Filter>ソース ファイル\VulkanWrapper\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanWrapper\InstanceExtensionSupport.cpp">
+      <Filter>ソース ファイル\VulkanWrapper\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Lib\Utility\File.cpp">
+      <Filter>ソース ファイル\Lib\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanWrapper\ShaderModule.cpp">
       <Filter>ソース ファイル\VulkanWrapper</Filter>
     </ClCompile>
   </ItemGroup>

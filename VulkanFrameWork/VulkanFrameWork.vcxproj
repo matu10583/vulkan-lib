@@ -137,6 +137,7 @@
     <ClInclude Include="include\Lib\Container\StaticString.h" />
     <ClInclude Include="include\Lib\Container\StaticVector.h" />
     <ClInclude Include="include\Lib\Container\Vector.h" />
+    <ClInclude Include="include\Lib\Utility\File.h" />
     <ClInclude Include="include\Lib\Utility\Math.h" />
     <ClInclude Include="include\VulkanWrapper\Device.h" />
     <ClInclude Include="include\VulkanWrapper\DeviceQueueCreateInfo.h" />
@@ -157,12 +158,26 @@
     <ClInclude Include="include\Lib\Container\Array.h" />
     <ClInclude Include="include\VulkanWrapper\Queue.h" />
     <ClInclude Include="include\VulkanWrapper\Surface.h" />
+    <ClInclude Include="include\VulkanWrapper\SwapChainSupportDetails.h" />
+    <ClInclude Include="include\VulkanWrapper\InstanceLayerSupport.h" />
+    <ClInclude Include="include\VulkanWrapper\InstanceExtensionSupport.h" />
+    <ClInclude Include="include\VulkanWrapper\DeviceExtensionSupport.h" />
+    <ClInclude Include="include\Lib\Container\RBTree.h" />
+    <ClInclude Include="include\Lib\Container\Set.h" />
+    <ClInclude Include="include\VulkanWrapper\SwapChain.h" />
+    <ClInclude Include="include\VulkanWrapper\Defines.h" />
+    <ClInclude Include="include\VulkanWrapper\Image.h" />
+    <ClInclude Include="include\VulkanWrapper\ImageView.h" />
+    <ClInclude Include="include\VulkanWrapper\SwapChainImage.h" />
+    <ClInclude Include="include\Lib\Utility\IFileSystem.h" />
+    <ClInclude Include="include\VulkanWrapper\ShaderModule.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Lib\Container\IVector.cpp" />
     <ClCompile Include="src\Lib\Container\StaticString.cpp" />
     <ClCompile Include="src\Lib\Container\StaticVector.cpp" />
     <ClCompile Include="src\Lib\Container\Vector.cpp" />
+    <ClCompile Include="src\Lib\Utility\File.cpp" />
     <ClCompile Include="src\Lib\Utility\Math.cpp" />
     <ClCompile Include="src\VulkanWrapper\Device.cpp" />
     <ClCompile Include="src\VulkanWrapper\DeviceQueueCreateInfo.cpp" />
@@ -177,6 +192,18 @@
     <ClCompile Include="src\Lib\Container\Array.cpp" />
     <ClCompile Include="src\VulkanWrapper\Queue.cpp" />
     <ClCompile Include="src\VulkanWrapper\Surface.cpp" />
+    <ClCompile Include="src\VulkanWrapper\SwapChainSupportDetails.cpp" />
+    <ClCompile Include="src\VulkanWrapper\InstanceLayerSupport.cpp" />
+    <ClCompile Include="src\VulkanWrapper\InstanceExtensionSupport.cpp" />
+    <ClCompile Include="src\VulkanWrapper\DeviceExtensionSupport.cpp" />
+    <ClCompile Include="src\Lib\Container\RBTree.cpp" />
+    <ClCompile Include="src\Lib\Container\Set.cpp" />
+    <ClCompile Include="src\VulkanWrapper\SwapChain.cpp" />
+    <ClCompile Include="src\VulkanWrapper\Defines.cpp" />
+    <ClCompile Include="src\VulkanWrapper\Image.cpp" />
+    <ClCompile Include="src\VulkanWrapper\ImageView.cpp" />
+    <ClCompile Include="src\VulkanWrapper\SwapChainImage.cpp" />
+    <ClCompile Include="src\VulkanWrapper\ShaderModule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VulkanFrameWork.rc" />

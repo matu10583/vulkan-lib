@@ -44,7 +44,8 @@ public:
 
 	void Destroy();
 	void GetQueue(uint32_t _family_idx, uint32_t _idx, Queue* _pQueue);
-
+	DeviceHandle GetHandle()const;
+	PhysicalDeviceHandle GetPhysicalDevice()const;
 private:
 	PhysicalDeviceHandle m_phys;
 	DeviceHandle m_device;

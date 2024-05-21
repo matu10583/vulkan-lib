@@ -4,6 +4,8 @@
 #include "VulkanWrapper/Device.h"
 #include "VulkanWrapper/Queue.h"
 #include "VulkanWrapper/Surface.h"
+#include "VulkanWrapper/SwapChain.h"
+#include "VulkanWrapper/ShaderModule.h"
 
 namespace VulkanWrapper {
 	class Application 
@@ -30,6 +32,9 @@ namespace VulkanWrapper {
 		Queue m_graphicQueue;
 		Queue m_presentQueue;
 		SurfaceHandle m_surface;
+		SwapChain m_swapChain;
+		ShaderModuleHandle m_vertShader;
+		ShaderModuleHandle m_fragShader;
 	};
 }
 

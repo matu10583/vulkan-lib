@@ -1,5 +1,6 @@
 #include "VulkanWrapper/QueueFamilyIndices.h"
 #include "VulkanWrapper/Surface.h"
+
 namespace VulkanWrapper{
 	QueueFamilyIndices::QueueFamilyIndices(PhysicalDeviceHandle _handle, SurfaceHandle _surface)
 		:m_availableFlag(0)
@@ -45,6 +46,15 @@ namespace VulkanWrapper{
 	bool QueueFamilyIndices::IsComplete() const
 	{
 		return  (m_availableFlag & QueueFamilyTypeBit::ALL) == QueueFamilyTypeBit::ALL;
+	}
+	void QueueFamilyIndices::CreateIndexSet(Lib::Container::Set<uint32_t>* out, uint32_t queue_bit)
+	{
+		out->Clear();
+		for (uint32_t i = 0; i < QueueFamilyType::COUNT; i++)
+		{
+			if ((queue_bit & (1 << i)) != (1<<i)) continue;
+			out->Insert(m_indices[i]);
+		}
 	}
 }
 

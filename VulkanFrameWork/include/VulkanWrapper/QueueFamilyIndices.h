@@ -1,6 +1,7 @@
 #pragma once
 #include "VulkanWrapper/Instance.h"
 #include "Lib/Container/Array.h"
+#include "Lib/Container/Set.h"
 namespace VulkanWrapper{
 	enum QueueFamilyType
 	{
@@ -25,6 +26,7 @@ public:
 	bool HasQueue(QueueFamilyType t)const;
 	uint32_t GetIndex(QueueFamilyType t)const;
 	bool IsComplete()const;
+	void CreateIndexSet(Lib::Container::Set<uint32_t>* out, uint32_t queue_bit = QueueFamilyTypeBit::ALL);
 private:
 	uint64_t m_availableFlag;
 	Lib::Container::Array<uint32_t, QueueFamilyType::COUNT> m_indices;

@@ -25,19 +25,20 @@ namespace Lib {
 
 			Vector(size_type reserve = 0, allocator_type a = allocator_type());
 			~Vector();
-			virtual void EmplaceBack(T&& elem) ;
-			virtual reference operator[](size_type idx) ;
-			virtual const_reference operator[](size_type idx)const ;
-			virtual void Clear() ;
-			virtual size_type Length()const ;
-			virtual size_type Capacity()const ;
-			virtual iterator Begin() ;
-			virtual iterator End() ;
-			virtual const_iterator CBegin()const ;
-			virtual const_iterator CEnd()const ;
+			void EmplaceBack(T&& elem) ;
+			reference operator[](size_type idx) ;
+			const_reference operator[](size_type idx)const ;
+			void Clear() ;
+			size_type Length()const ;
+			size_type Capacity()const ;
+			iterator Begin() ;
+			iterator End() ;
+			const_iterator CBegin()const ;
+			const_iterator CEnd()const ;
 			void Reserve(size_type reserve);
 			void Resize(size_type size);
 			pointer Data();
+			bool Empty()const;
 
 		private:
 			T* m_pFirst;
@@ -177,6 +178,12 @@ namespace Lib {
 			Vector<T, Allocator>::Data()
 		{
 			return m_pFirst;
+		}
+
+		template<typename T, typename Allocator>
+		inline bool Lib::Container::Vector<T, Allocator>::Empty()const
+		{
+			return Length() == 0;
 		}
 	}
 }
