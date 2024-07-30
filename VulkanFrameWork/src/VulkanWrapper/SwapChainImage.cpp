@@ -42,6 +42,10 @@ namespace VulkanWrapper{
             assert(_i < m_imageViews.Length());
             return m_imageViews[_i];
         }
+        uint32_t SwapChainImage::GetImageCount() const
+        {
+            return m_images.Length();
+        }
         SwapChainImage::SwapChainImage()
                 {
 

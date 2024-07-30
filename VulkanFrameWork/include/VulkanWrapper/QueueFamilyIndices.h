@@ -21,6 +21,9 @@ class QueueFamilyIndices
 {
 public:
 	QueueFamilyIndices(
+		
+	);
+	bool Init(
 		PhysicalDeviceHandle _handle, SurfaceHandle _surface
 	);
 	bool HasQueue(QueueFamilyType t)const;

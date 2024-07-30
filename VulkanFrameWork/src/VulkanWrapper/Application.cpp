@@ -4,12 +4,13 @@
 #include "Lib/Container/StaticVector.h"
 #include "Lib/Container/Array.h"
 #include "Lib/Container/Vector.h"
-#include "VulkanWrapper/QueueFamilyIndices.h"
-#include "VulkanWrapper/DeviceQueueCreateInfo.h"
-#include "VulkanWrapper/SwapChainSupportDetails.h"
 #include "Lib/Utility/Logger.h"
 #include "Lib/Container/Set.h"
 #include <limits> 
+#include "Lib/Container/Generator.h"
+#include "Lib/Utility/Macro.h"
+#include "VulkanWrapper/Functions.h"
+#include "VulkanWrapper/CreateInfos.h"
 #undef max
 namespace {
 	static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
@@ -63,7 +64,8 @@ bool VulkanWrapper::Application::Init(HWND _hwnd, HINSTANCE _hinst)
  		auto physDevice = m_instance.GetPhyscalDevice(i);
 		auto prop = physDevice.GetProperties();
 		auto feat = physDevice.GetFeatures();
-		auto queueFamilyIndices = QueueFamilyIndices(physDevice, m_surface);
+		auto queueFamilyIndices = QueueFamilyIndices();
+		queueFamilyIndices.Init(physDevice, m_surface);
 		auto swapChainSupport = SwapChainSupportDetails(physDevice, m_surface);
 		if (queueFamilyIndices.IsComplete() && swapChainSupport.IsSwapChainSupported()) {
 			selectedDevice = physDevice;
@@ -72,15 +74,15 @@ bool VulkanWrapper::Application::Init(HWND _hwnd, HINSTANCE _hinst)
 	}
 
 
-	auto queueFamilyIndices = QueueFamilyIndices(selectedDevice, m_surface);
+	m_queueIndices.Init(selectedDevice, m_surface);
 
 	VkPhysicalDeviceFeatures feats{};
-	Lib::Container::StaticVector<DeviceQueueCreateInfo,2> createInfo{};
+	Lib::Container::StaticVector<DeviceQueueCreateInfo, 2> createInfo{};
 
 
 	float queuePri = 1.0;
 	Lib::Container::Set<uint32_t> indices{};
-	queueFamilyIndices.CreateIndexSet(&indices,
+	m_queueIndices.CreateIndexSet(&indices,
 		QueueFamilyTypeBit::ALL | QueueFamilyTypeBit::PRESENT_BIT);
 
 	createInfo.Resize(indices.Size());
@@ -102,10 +104,10 @@ bool VulkanWrapper::Application::Init(HWND _hwnd, HINSTANCE _hinst)
 		createInfo.Length(),
 		pDevExtensions, _countof(pDevExtensions),
 		pLayers, _countof(pLayers)
-		);
+	);
 
-	m_device.GetQueue(queueFamilyIndices.GetIndex(QueueFamilyType::GRAPHICS), 0, &m_graphicQueue);
-	m_device.GetQueue(queueFamilyIndices.GetIndex(QueueFamilyType::PRESENT), 0, &m_presentQueue);
+	m_device.GetQueue(m_queueIndices.GetIndex(QueueFamilyType::GRAPHICS), 0, &m_graphicQueue);
+	m_device.GetQueue(m_queueIndices.GetIndex(QueueFamilyType::PRESENT), 0, &m_presentQueue);
 
 	SwapChainSupportDetails scSupport(m_device.GetPhysicalDevice(), m_surface);
 	SurfaceInfo2D scSurfaceInfo{};
@@ -148,17 +150,57 @@ bool VulkanWrapper::Application::Init(HWND _hwnd, HINSTANCE _hinst)
 	m_fragShader.Init(
 		m_device.GetHandle(), "shader/bin/triangle.frag.spirv"
 	);
+
+	////òAë≈sÅ|ÉpÉX
+	RenderPassCreateInfoBuilder rpciBuilder{};
+	Lib::Container::StaticVector<AttachmentHandle, 1> attachments{};
+	attachments.EmplaceBack(
+		rpciBuilder.AddColorAttachment()
+	);
+	attachments[0]
+		.Format(m_swapChain.GetFormat())
+		.LoadOp(VK_ATTACHMENT_LOAD_OP_CLEAR)
+		.StoreOp(VK_ATTACHMENT_STORE_OP_STORE)
+		.InitialLayout(VK_IMAGE_LAYOUT_UNDEFINED)
+		.FinalLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL)
+		.Samples(VK_SAMPLE_COUNT_1_BIT);
+	
+
+	Lib::Container::StaticVector<SubpassHandle, 1> subpasses{};
+	subpasses.EmplaceBack(rpciBuilder.AddSubpass());
+	subpasses[0]
+		.ColorAttachments(
+			attachments.Data(), attachments.Length()
+		);
+	auto rpCreateInfo = rpciBuilder.Build();
+	m_renderPass.Init(rpCreateInfo, m_device.GetHandle());
+	InitPipeline(subpasses[0]);
     return true;
 }
 
 void VulkanWrapper::Application::Term()
 {
+	m_inFlightFence.Destroy(m_device.GetHandle());
+	m_renderFinishedSemaphore.Destroy(m_device.GetHandle());
+	m_imageAvailableSemaphore.Destroy(m_device.GetHandle());
+	m_graphicCommandPool.Destroy(m_device.GetHandle());
+	foreach(fb, m_frameBuffers) {
+		fb->Destroy(m_device.GetHandle());
+	}
+	m_pipeline.Destroy(m_device.GetHandle());
+	m_pipelineLayout.Destroy(m_device.GetHandle());
+	m_renderPass.Destroy(m_device.GetHandle());
 	m_vertShader.Destroy(m_device.GetHandle());
 	m_fragShader.Destroy(m_device.GetHandle());
 	m_swapChain.Destroy(m_device.GetHandle());
 	m_device.Destroy();
 	m_surface.Destroy(m_instance.GetHandle());
 	m_instance.Destroy();
+}
+
+void VulkanWrapper::Application::Update()
+{
+	Draw();
 }
 
 uint32_t VulkanWrapper::Application::VkAppVersion() const
@@ -179,4 +221,201 @@ char const* VulkanWrapper::Application::VkApplicationName() const
 char const* VulkanWrapper::Application::VkEngineName() const
 {
     return "No Engine";
+}
+
+void VulkanWrapper::Application::Draw()
+{
+	vkWaitForFences(
+		m_device.GetHandle().GetVulkanHandle(), 1,
+		m_inFlightFence.VulkanHandleData(), VK_TRUE,
+		UINT64_MAX
+	);
+	vkResetFences(
+		m_device.GetHandle().GetVulkanHandle(),
+		1, m_inFlightFence.VulkanHandleData()
+	);
+	uint32_t imgIdx = m_swapChain.AcquireNextImageIndex(
+		m_device.GetHandle(), UINT64_MAX, m_imageAvailableSemaphore, {}
+	);
+	m_graphicCommandBuffer.Reset(0);
+	RecordBuffer(imgIdx);
+}
+
+void VulkanWrapper::Application::RecordBuffer(uint32_t _idx)
+{
+	auto begin = CommandBufferBeginInfo();
+	m_graphicCommandBuffer.CmdBegin(&begin);
+	auto rpbegin = RenderPassBeginInfo(
+		m_renderPass, m_frameBuffers[_idx]
+	);
+	auto swapChainExtent = m_swapChain.GetExtent2D();
+	auto offset = VkOffset2D();
+	offset.x = offset.y = 0;
+	rpbegin.SetArea(
+		offset, swapChainExtent
+	);
+	float pcolors[] = {
+		0.0f, 0.0f, 0.0f, 1.0f
+	};
+	float const* ppcol[] = { pcolors };
+	rpbegin.SetClearValues(
+		1, ((float const**)ppcol)
+	);
+	m_graphicCommandBuffer.CmdBeginRenderPass(&rpbegin, VK_SUBPASS_CONTENTS_INLINE);
+	m_graphicCommandBuffer.CmdBindGraphicPipeline(
+		m_pipeline
+	);
+	auto viewport = VkViewport();
+	viewport.x = 0.0f;
+	viewport.y = 0.0f;
+	viewport.width = static_cast<float>(swapChainExtent.width);
+	viewport.height = static_cast<float>(swapChainExtent.height);
+	viewport.minDepth = 0.0f;
+	viewport.maxDepth = 1.0f;
+	m_graphicCommandBuffer.CmdSetViewPort(&viewport, 1);
+	VkRect2D scissor{};
+	scissor.offset = { 0, 0 };
+	scissor.extent = swapChainExtent;
+	m_graphicCommandBuffer.CmdSetScissor(&scissor, 1);
+	m_graphicCommandBuffer.CmdDraw(3, 1, 0, 0);
+	m_graphicCommandBuffer.CmdEndRenderPass();
+	m_graphicCommandBuffer.CmdEnd();
+}
+
+bool VulkanWrapper::Application::InitPipeline(
+	SubpassHandle _subpass
+)
+{
+	m_pipelineLayout.Init(m_device.GetHandle());
+
+	VkDynamicState dss[] = {
+		VK_DYNAMIC_STATE_VIEWPORT,
+		VK_DYNAMIC_STATE_SCISSOR
+	};
+	auto dynamicState = PipelineDynamicStateCreateInfo(
+		&dss[0], _countof(dss)
+	);
+	auto vertexInput = PipelineVertexInputStateCreateInfo(
+		nullptr, 0,
+		nullptr, 0
+	);
+	auto inputAssembly = PipelineInputAssemblyStateCreateInfo(
+		VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST
+	);
+	auto rasterizationState = PipelineRasterizationStateCreateInfo(
+		VK_FRONT_FACE_CLOCKWISE
+	);
+
+	auto multiSampling = PipelineMultisampleStateCreateInfo();
+
+	auto colorBlendingAttachment = PipelineColorBlendAttachmentState();
+
+	auto colorBlending = PipelineColorBlendStateCreateInfo(
+		&colorBlendingAttachment, 1
+	);
+
+	auto viewport = PipelineViewportStateCreateInfo(
+		nullptr, 1, nullptr, 1
+	);
+
+	PipelineShaderStageCreateInfo shaderStage[2];
+	shaderStage[0].SetShader(
+		m_vertShader, "main", VK_SHADER_STAGE_VERTEX_BIT
+	);
+	shaderStage[1].SetShader(
+		m_fragShader, "main", VK_SHADER_STAGE_FRAGMENT_BIT
+	);
+
+
+	auto createInfo = GraphicsPipelineCreateInfo();
+	createInfo.ColorBlendState(&colorBlending)
+		.DepthStencilState(nullptr)
+		.DynamicState(&dynamicState)
+		.InputAssemblyState(&inputAssembly)
+		.MultisampleState(&multiSampling)
+		.PipelineLayout(m_pipelineLayout)
+		.RasterizationStatetexInputState(&rasterizationState)
+		.RenderPass(m_renderPass, _subpass.GetRef())
+		.ShaderStages(&shaderStage[0], _countof(shaderStage))
+		.VertexInputState(&vertexInput)
+		.ViewportState(&viewport);
+
+	m_pipeline.Init(
+		m_device.GetHandle(),
+		&createInfo
+	);
+	InitFrameBuffers();
+	InitCommandBuffer();
+	InitSyncObject();
+	return true;
+}
+
+bool VulkanWrapper::Application::InitFrameBuffers()
+{
+	m_frameBuffers.Resize(m_swapChain.GetImageCount());
+	auto fbs = m_frameBuffers.GetEnumerator();
+	while (fbs.MoveNext())
+	{
+		ImageViewHandle views[] = {
+			m_swapChain.GetImageHandle(fbs.CurrentIndex())
+		};
+		FrameBufferCreateInfo createInfo(
+			m_renderPass, views, _countof(views),
+			m_swapChain.GetExtent2D(), 1
+		);
+		fbs.Current().Init(
+			m_device.GetHandle(), createInfo
+		);
+	}
+
+	return true;
+}
+
+bool VulkanWrapper::Application::InitCommandBuffer()
+{
+	auto createInfo = CommandPoolCreateInfo(
+		m_queueIndices.GetIndex(QueueFamilyType::GRAPHICS),
+		VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT
+	);
+	m_graphicCommandPool.Init(
+		m_device.GetHandle(), createInfo
+	);
+	auto allocateInfo = CommandBufferAllocateInfo(
+		m_graphicCommandPool,
+		VK_COMMAND_BUFFER_LEVEL_PRIMARY, 1
+	);
+	AllocateCommandBuffer(
+		m_device.GetHandle(),
+		allocateInfo,
+		&m_graphicCommandBuffer
+	);
+
+	return true;
+}
+
+void VulkanWrapper::Application::InitSyncObject()
+{
+	auto imgSemCreateInfo = SemaphoreCreateInfo();
+	m_imageAvailableSemaphore.Init(
+		m_device.GetHandle(), &imgSemCreateInfo
+	);
+	auto renSemCreateInfo = SemaphoreCreateInfo();
+	m_renderFinishedSemaphore.Init(
+		m_device.GetHandle(), &renSemCreateInfo
+	);
+	auto infFenceCreateInfo = FenceCreateInfo(VK_FENCE_CREATE_SIGNALED_BIT);
+	m_inFlightFence.Init(
+		m_device.GetHandle(),
+		&infFenceCreateInfo
+	);
+}
+
+void VulkanWrapper::Application::initPipelineState()
+{
+	VkDynamicState dss[] = {
+		VK_DYNAMIC_STATE_VIEWPORT,
+		VK_DYNAMIC_STATE_SCISSOR
+	};
+	auto dynamicState = PipelineDynamicStateCreateInfo(dss, _countof(dss));
+
 }

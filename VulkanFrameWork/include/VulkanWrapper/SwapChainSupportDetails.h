@@ -9,6 +9,7 @@ class SwapChainSupportDetails
         public:
         SwapChainSupportDetails(PhysicalDeviceHandle _hPhysDev, SurfaceHandle _hSurface);
         ~SwapChainSupportDetails();
+        SwapChainSupportDetails(SwapChainSupportDetails&&);
         bool IsSwapChainSupported()const;
         VkSurfaceCapabilitiesKHR const& GetCapablities()const;
         Lib::Container::Vector<VkSurfaceFormatKHR> const& GetFormats()const;

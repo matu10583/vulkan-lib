@@ -2,9 +2,13 @@
 #include "VulkanWrapper/Surface.h"
 
 namespace VulkanWrapper{
-	QueueFamilyIndices::QueueFamilyIndices(PhysicalDeviceHandle _handle, SurfaceHandle _surface)
+	QueueFamilyIndices::QueueFamilyIndices()
 		:m_availableFlag(0)
 		,m_indices(UINT32_MAX)
+	{
+
+	}
+	bool QueueFamilyIndices::Init(PhysicalDeviceHandle _handle, SurfaceHandle _surface)
 	{
 		Lib::Container::Vector<VkQueueFamilyProperties> queueProps{};
 		queueProps.Resize(_handle.GetQueueFamilyCount());
@@ -29,6 +33,7 @@ namespace VulkanWrapper{
 
 			if (IsComplete()) break;
 		}
+		return true;
 	}
 	bool QueueFamilyIndices::HasQueue(QueueFamilyType t) const
 	{

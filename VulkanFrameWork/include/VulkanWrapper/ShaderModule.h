@@ -4,7 +4,7 @@
 namespace VulkanWrapper{
     class DeviceHandle;
     class ShaderModuleHandle
-        :VulkanHandleBase<VkShaderModule> {
+        :public VulkanHandleBase<VkShaderModule> {
     public:
         ShaderModuleHandle();
         ~ShaderModuleHandle();

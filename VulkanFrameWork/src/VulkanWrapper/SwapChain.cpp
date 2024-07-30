@@ -2,6 +2,8 @@
 #include "VulkanWrapper/Surface.h"
 #include "VulkanWrapper/Macro.h"
 #include "VulkanWrapper/Device.h"
+#include "VulkanWrapper/Semahore.h"
+#include "VulkanWrapper/Fence.h"
 namespace VulkanWrapper{
         SwapChain::~SwapChain(){
 
@@ -21,6 +23,7 @@ namespace VulkanWrapper{
             m_images.Init(
                 _hDev, m_swapChain, _imageInfo.Image.Format
             );
+            m_surfaceInfo = _imageInfo;
             return true;
         }
         void SwapChain::Destroy(DeviceHandle _hDev)
@@ -28,6 +31,32 @@ namespace VulkanWrapper{
             m_images.Destroy(_hDev);
             m_swapChain.Destroy(_hDev);
         }
+        uint32_t SwapChain::GetImageCount() const
+        {
+            return m_images.GetImageCount();
+        }
+        ImageViewHandle SwapChain::GetImageHandle(uint32_t _t)
+        {
+            return m_images.GetImageView(_t);
+        }
+
+        VkExtent2D SwapChain::GetExtent2D() const
+        {
+            return m_surfaceInfo.Image.Extent;
+        }
+
+        VkFormat SwapChain::GetFormat() const
+        {
+            return m_surfaceInfo.Image.Format;
+        }
+
+        uint32_t SwapChain::AcquireNextImageIndex(DeviceHandle _dev, uint64_t _timeOut, SemaphoreHandle _semaphore, FenceHandle _fence)
+        {
+            return m_swapChain.AcquireNextImageIndex(
+                _dev, _timeOut, _semaphore, _fence
+            );
+        }
+
         SwapChain::SwapChain()
                 {
 
@@ -82,5 +111,17 @@ namespace VulkanWrapper{
         void SwapChainHandle::Destroy(DeviceHandle _hDev)
         {
             vkDestroySwapchainKHR(_hDev.GetVulkanHandle(), m_vkHandle, nullptr);
+        }
+        uint32_t SwapChainHandle::AcquireNextImageIndex(DeviceHandle _dev, uint64_t _timeOut, SemaphoreHandle _semaphore, FenceHandle _fence)
+        {
+            uint32_t ret = UINT32_MAX;
+            VEXCEPT(vkAcquireNextImageKHR(
+                _dev.GetVulkanHandle(),
+                m_vkHandle, _timeOut,
+                _semaphore.GetVulkanHandle(),
+                _fence.GetVulkanHandle(),
+                &ret
+            ));
+            return ret;
         }
 }

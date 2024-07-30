@@ -55,6 +55,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             DispatchMessage(&msg);
         }
         //update
+        app.Update();
     }
     app.Term();
     return (int) msg.wParam;

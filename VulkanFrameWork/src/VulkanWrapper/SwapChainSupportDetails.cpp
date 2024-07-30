@@ -23,6 +23,12 @@ namespace VulkanWrapper{
     SwapChainSupportDetails::~SwapChainSupportDetails(){
 
         }
+    SwapChainSupportDetails::SwapChainSupportDetails(SwapChainSupportDetails&& _this)
+        :m_capabilities(_this.m_capabilities)
+        ,m_formats(std::move(_this.m_formats))
+        ,m_presentModes(std::move(_this.m_presentModes))
+    {
+    }
     bool SwapChainSupportDetails::IsSwapChainSupported() const
     {
         return (!m_formats.Empty() && !m_presentModes.Empty());

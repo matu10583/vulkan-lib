@@ -16,6 +16,8 @@ class SwapChainImage
     void Destroy(DeviceHandle _hDev);
     ImageHandle GetImage(uint32_t _i);
     ImageViewHandle GetImageView(uint32_t _i);
+    uint32_t GetImageCount()const;
+
 private:
     Lib::Container::Vector<ImageHandle> m_images;
     Lib::Container::Vector<ImageViewHandle> m_imageViews;

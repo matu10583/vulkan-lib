@@ -19,7 +19,7 @@ public:
 	T* VulkanHandleData() {
 		return &m_vkHandle;
 	}
-
+	
 protected:
 	T m_vkHandle;
 };

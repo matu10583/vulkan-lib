@@ -6,6 +6,8 @@
 namespace VulkanWrapper{
 	class SurfaceHandle;
 	class DeviceHandle;
+	class SemaphoreHandle;
+	class FenceHandle;
 	class SwapChainHandle
 		:public VulkanHandleBase<VkSwapchainKHR>
 	{
@@ -23,11 +25,16 @@ namespace VulkanWrapper{
 			VkSurfaceTransformFlagBitsKHR _transform
 		);
 		void Destroy(DeviceHandle _hDev);
-		//void GetImage(DeviceHandle _hDev)
+		uint32_t AcquireNextImageIndex(
+			DeviceHandle _dev,
+			uint64_t _timeOut,
+			SemaphoreHandle _semaphore,
+			FenceHandle _fence
+		);
 	private:
 
 	};
-
+	
 
 class SwapChain
 {
@@ -47,8 +54,19 @@ class SwapChain
 		void Destroy(
 			DeviceHandle _hDev
 		);
+		uint32_t GetImageCount()const;
+		ImageViewHandle GetImageHandle(uint32_t _t);
+		VkExtent2D GetExtent2D()const;
+		VkFormat GetFormat()const;
+		uint32_t AcquireNextImageIndex(
+			DeviceHandle _dev,
+			uint64_t _timeOut,
+			SemaphoreHandle _semaphore,
+			FenceHandle _fence
+		);
 private:
 	SwapChainHandle m_swapChain;
 	SwapChainImage m_images;
+	SurfaceInfo2D m_surfaceInfo;
 };
 }
