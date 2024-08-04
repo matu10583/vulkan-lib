@@ -42,6 +42,7 @@ namespace VulkanWrapper {
 	private:
 		void Draw();
 		void RecordBuffer(uint32_t _idx);
+		void SubmitQueue(uint32_t _imageIdx);
 		bool InitPipeline(
 		SubpassHandle _handle);
 		bool InitFrameBuffers();
@@ -67,6 +68,7 @@ namespace VulkanWrapper {
 		SemaphoreHandle m_imageAvailableSemaphore;
 		SemaphoreHandle m_renderFinishedSemaphore;
 		FenceHandle m_inFlightFence;
+
 	};
 }
 

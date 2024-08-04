@@ -57,8 +57,9 @@ namespace VulkanWrapper{
         desc->samples = _samples;
         return *this;
     }
-    inline uint32_t SubpassHandle::GetRef() const
+    inline uint32_t SubpassHandle::GetSubpassIndex() const
     {
+        if (m_sparseId == UINT32_MAX) return VK_SUBPASS_EXTERNAL;
         return m_pParent->GetSubpassIdx(*this);
     }
     inline uint32_t SubpassHandle::GetId() const

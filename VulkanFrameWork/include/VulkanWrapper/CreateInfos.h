@@ -12,3 +12,5 @@
 #include "VulkanWrapper/CommandBufferBeginInfo.h"
 #include "VulkanWrapper/SemaphoreCreateInfo.h"
 #include "VulkanWrapper/FenceCreateInfo.h"
+#include "VulkanWrapper/SubmitInfo.h"
+#include "VulkanWrapper/PresentInfo.h"

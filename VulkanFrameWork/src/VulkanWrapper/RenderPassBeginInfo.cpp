@@ -7,6 +7,7 @@ namespace VulkanWrapper{
     RenderPassBeginInfo::RenderPassBeginInfo(RenderPassHandle _renderPass, FrameBufferHandle _frameBuffer)
         :VkRenderPassBeginInfo()
     {
+        this->sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
         this->clearValueCount = 0;
         this->framebuffer = _frameBuffer.GetVulkanHandle();
         this->pClearValues = nullptr;
@@ -19,9 +20,9 @@ namespace VulkanWrapper{
         return *this;
         // TODO: return ステートメントをここに挿入します
     }
-    RenderPassBeginInfo& RenderPassBeginInfo::SetClearValues(uint32_t clearValueCount, float const** _color, float const* _depth, uint32_t const* _stencil)
+    RenderPassBeginInfo& RenderPassBeginInfo::SetClearValues(uint32_t _clearValueCount, float const** _color, float const* _depth, uint32_t const* _stencil)
     {
-        m_clearValues.Resize(clearValueCount);
+        m_clearValues.Resize(_clearValueCount);
         uint32_t count = 0;
         foreach(cv, m_clearValues) {
             if (_color[count]) {
@@ -37,8 +38,8 @@ namespace VulkanWrapper{
             }
             count++;
         }
-        clearValueCount = m_clearValues.Length();
-        pClearValues = m_clearValues.Data();
+        this->clearValueCount = m_clearValues.Length();
+        this->pClearValues = m_clearValues.Data();
         return *this;
         // TODO: return ステートメントをここに挿入します
     }

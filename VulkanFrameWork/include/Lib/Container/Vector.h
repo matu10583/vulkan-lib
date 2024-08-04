@@ -45,7 +45,8 @@ namespace Lib {
 			pointer Data();
 			const_pointer Data()const;
 			bool Empty()const;
-			T const& Back()const;
+			T const& CBack()const;
+			T& Back();
 			BasicEnumerator<Vector<T, Allocator>> GetEnumerator();
 		private:
 			T* m_pFirst;

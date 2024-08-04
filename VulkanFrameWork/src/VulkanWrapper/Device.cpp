@@ -45,6 +45,11 @@ namespace VulkanWrapper {
 		);
 	}
 
+	void DeviceHandle::WaitIdle()
+	{
+		vkDeviceWaitIdle(m_vkHandle);
+	}
+
 	void DeviceHandle::GetDeviceQueue(uint32_t _family_idx, uint32_t _idx, QueueHandle* _pHandle)
 	{
 		vkGetDeviceQueue(m_vkHandle, _family_idx, _idx, _pHandle->VulkanHandleData());
@@ -86,6 +91,11 @@ namespace VulkanWrapper {
 		);
 
 		return true;
+	}
+
+	void Device::WaitIdle()
+	{
+		m_device.WaitIdle();
 	}
 
 	void Device::Destroy()

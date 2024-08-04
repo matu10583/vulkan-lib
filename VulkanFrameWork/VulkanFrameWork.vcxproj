@@ -170,12 +170,14 @@
     <ClInclude Include="include\VulkanWrapper\PipelineLayout.h" />
     <ClInclude Include="include\VulkanWrapper\PipelineShaderStageCreateInfo.h" />
     <ClInclude Include="include\VulkanWrapper\PipelineViewportStateCreateInfo.h" />
+    <ClInclude Include="include\VulkanWrapper\PresentInfo.h" />
     <ClInclude Include="include\VulkanWrapper\QueueFamilyIndices.h" />
     <ClInclude Include="include\VulkanWrapper\RenderPass.h" />
     <ClInclude Include="include\VulkanWrapper\RenderPassBeginInfo.h" />
     <ClInclude Include="include\VulkanWrapper\RenderPassCreateInfo.h" />
     <ClInclude Include="include\VulkanWrapper\Semahore.h" />
     <ClInclude Include="include\VulkanWrapper\SemaphoreCreateInfo.h" />
+    <ClInclude Include="include\VulkanWrapper\SubmitInfo.h" />
     <ClInclude Include="include\VulkanWrapper\SubpassDescription.h" />
     <ClInclude Include="include\VulkanWrapper\VulkanHandleBase.h" />
     <ClInclude Include="include\VulkanWrapper\Macro.h" />
@@ -243,12 +245,14 @@
     <ClCompile Include="src\VulkanWrapper\PipelineLayout.cpp" />
     <ClCompile Include="src\VulkanWrapper\PipelineShaderStageCreateInfo.cpp" />
     <ClCompile Include="src\VulkanWrapper\PipelineViewportStateCreateInfo.cpp" />
+    <ClCompile Include="src\VulkanWrapper\PresentInfo.cpp" />
     <ClCompile Include="src\VulkanWrapper\QueueFamilyIndices.cpp" />
     <ClCompile Include="src\VulkanWrapper\RenderPass.cpp" />
     <ClCompile Include="src\VulkanWrapper\RenderPassBeginInfo.cpp" />
     <ClCompile Include="src\VulkanWrapper\RenderPassCreateInfo.cpp" />
     <ClCompile Include="src\VulkanWrapper\Semahore.cpp" />
     <ClCompile Include="src\VulkanWrapper\SemaphoreCreateInfo.cpp" />
+    <ClCompile Include="src\VulkanWrapper\SubmitInfo.cpp" />
     <ClCompile Include="src\VulkanWrapper\SubpassDescription.cpp" />
     <ClCompile Include="VulkanFrameWork.cpp" />
     <ClCompile Include="src\VulkanWrapper\DebugMessengerHandle.cpp" />
@@ -310,11 +314,13 @@
     <None Include="include\VulkanWrapper\PipelineLayout.inl" />
     <None Include="include\VulkanWrapper\PipelineShaderStageCreateInfo.inl" />
     <None Include="include\VulkanWrapper\PipelineViewportStateCreateInfo.inl" />
+    <None Include="include\VulkanWrapper\PresentInfo.inl" />
     <None Include="include\VulkanWrapper\RenderPass.inl" />
     <None Include="include\VulkanWrapper\RenderPassBeginInfo.inl" />
     <None Include="include\VulkanWrapper\RenderPassCreateInfo.inl" />
     <None Include="include\VulkanWrapper\Semahore.inl" />
     <None Include="include\VulkanWrapper\SemaphoreCreateInfo.inl" />
+    <None Include="include\VulkanWrapper\SubmitInfo.inl" />
     <None Include="include\VulkanWrapper\SubpassDescription.inl" />
     <None Include="include\Lib\Container\Vector.inl" />
   </ItemGroup>

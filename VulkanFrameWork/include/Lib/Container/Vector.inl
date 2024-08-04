@@ -173,9 +173,16 @@ namespace Lib{
 			return Length() == 0;
 		}
 		template<typename T, typename Allocator>
-		inline T const& Vector<T, Allocator>::Back() const
+		inline T const& Vector<T, Allocator>::CBack() const
 		{
 			return this[Length() - 1];
+			// TODO: return ステートメントをここに挿入します
+		}
+
+		template<typename T, typename Allocator>
+		inline T& Vector<T, Allocator>::Back()
+		{
+			return *(m_pEnd - 1);
 			// TODO: return ステートメントをここに挿入します
 		}
 

@@ -327,6 +327,12 @@
     <ClInclude Include="include\VulkanWrapper\FenceCreateInfo.h">
       <Filter>ヘッダー ファイル\%2aVulkanWrapper\CreateInfo</Filter>
     </ClInclude>
+    <ClInclude Include="include\VulkanWrapper\SubmitInfo.h">
+      <Filter>ヘッダー ファイル\%2aVulkanWrapper\CreateInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VulkanWrapper\PresentInfo.h">
+      <Filter>ヘッダー ファイル\%2aVulkanWrapper\CreateInfo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VulkanFrameWork.cpp">
@@ -521,6 +527,12 @@
     <ClCompile Include="src\VulkanWrapper\FenceCreateInfo.cpp">
       <Filter>ソース ファイル\%2aVulkanWrapper\CreateInfo</Filter>
     </ClCompile>
+    <ClCompile Include="src\VulkanWrapper\SubmitInfo.cpp">
+      <Filter>ソース ファイル\%2aVulkanWrapper\CreateInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanWrapper\PresentInfo.cpp">
+      <Filter>ソース ファイル\%2aVulkanWrapper\CreateInfo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VulkanFrameWork.rc">
@@ -630,6 +642,12 @@
       <Filter>ヘッダー ファイル\%2aVulkanWrapper\HandleWrapper</Filter>
     </None>
     <None Include="include\VulkanWrapper\FenceCreateInfo.inl">
+      <Filter>ヘッダー ファイル\%2aVulkanWrapper\CreateInfo</Filter>
+    </None>
+    <None Include="include\VulkanWrapper\SubmitInfo.inl">
+      <Filter>ヘッダー ファイル\%2aVulkanWrapper\CreateInfo</Filter>
+    </None>
+    <None Include="include\VulkanWrapper\PresentInfo.inl">
       <Filter>ヘッダー ファイル\%2aVulkanWrapper\CreateInfo</Filter>
     </None>
   </ItemGroup>

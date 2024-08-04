@@ -64,6 +64,7 @@ class SwapChain
 			SemaphoreHandle _semaphore,
 			FenceHandle _fence
 		);
+		SwapChainHandle GetSwapChain();
 private:
 	SwapChainHandle m_swapChain;
 	SwapChainImage m_images;

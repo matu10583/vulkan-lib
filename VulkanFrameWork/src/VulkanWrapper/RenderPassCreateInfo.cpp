@@ -25,6 +25,23 @@ namespace VulkanWrapper{
         return SubpassHandle(id, this);
     }
 
+    RenderPassCreateInfoBuilder& RenderPassCreateInfoBuilder::AddDependency(SubpassHandle _srcSubpass, VkPipelineStageFlags _srcStageMasks, VkAccessFlags _scrAccessFlags, SubpassHandle _dstSubpass, VkPipelineStageFlags _dstStageMasks, VkAccessFlags _dstAccessFlags)
+    {
+        m_subpassDependencies.EmplaceBack(
+            VkSubpassDependency()
+        );
+        auto& dependency = m_subpassDependencies.Back();
+        dependency.srcSubpass = _srcSubpass.GetSubpassIndex();
+        dependency.srcStageMask = _srcStageMasks;
+        dependency.srcAccessMask = _scrAccessFlags;
+        
+        dependency.dstSubpass = _dstSubpass.GetSubpassIndex();
+        dependency.dstStageMask = _dstStageMasks;
+        dependency.dstAccessMask = _dstAccessFlags;
+        return *this;
+        // TODO: return ステートメントをここに挿入します
+    }
+
 
     VkRenderPassCreateInfo RenderPassCreateInfoBuilder::Build() 
     {

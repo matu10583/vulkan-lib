@@ -162,7 +162,7 @@ bool VulkanWrapper::Application::Init(HWND _hwnd, HINSTANCE _hinst)
 		.LoadOp(VK_ATTACHMENT_LOAD_OP_CLEAR)
 		.StoreOp(VK_ATTACHMENT_STORE_OP_STORE)
 		.InitialLayout(VK_IMAGE_LAYOUT_UNDEFINED)
-		.FinalLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL)
+		.FinalLayout(VK_IMAGE_LAYOUT_PRESENT_SRC_KHR)
 		.Samples(VK_SAMPLE_COUNT_1_BIT);
 	
 
@@ -172,6 +172,15 @@ bool VulkanWrapper::Application::Init(HWND _hwnd, HINSTANCE _hinst)
 		.ColorAttachments(
 			attachments.Data(), attachments.Length()
 		);
+	rpciBuilder.AddDependency(
+		{},
+		VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+		0,
+		subpasses[0],
+		VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+		VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT
+	);
+	
 	auto rpCreateInfo = rpciBuilder.Build();
 	m_renderPass.Init(rpCreateInfo, m_device.GetHandle());
 	InitPipeline(subpasses[0]);
@@ -180,6 +189,7 @@ bool VulkanWrapper::Application::Init(HWND _hwnd, HINSTANCE _hinst)
 
 void VulkanWrapper::Application::Term()
 {
+	m_device.WaitIdle();
 	m_inFlightFence.Destroy(m_device.GetHandle());
 	m_renderFinishedSemaphore.Destroy(m_device.GetHandle());
 	m_imageAvailableSemaphore.Destroy(m_device.GetHandle());
@@ -225,6 +235,7 @@ char const* VulkanWrapper::Application::VkEngineName() const
 
 void VulkanWrapper::Application::Draw()
 {
+	m_device.WaitIdle();
 	vkWaitForFences(
 		m_device.GetHandle().GetVulkanHandle(), 1,
 		m_inFlightFence.VulkanHandleData(), VK_TRUE,
@@ -239,6 +250,7 @@ void VulkanWrapper::Application::Draw()
 	);
 	m_graphicCommandBuffer.Reset(0);
 	RecordBuffer(imgIdx);
+	SubmitQueue(imgIdx);
 }
 
 void VulkanWrapper::Application::RecordBuffer(uint32_t _idx)
@@ -280,6 +292,40 @@ void VulkanWrapper::Application::RecordBuffer(uint32_t _idx)
 	m_graphicCommandBuffer.CmdDraw(3, 1, 0, 0);
 	m_graphicCommandBuffer.CmdEndRenderPass();
 	m_graphicCommandBuffer.CmdEnd();
+
+
+}
+
+void VulkanWrapper::Application::SubmitQueue(uint32_t _imageIdx)
+{
+	auto submitInfo = SubmitInfo();
+	VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+	submitInfo.CommandBuffer(
+		1, &m_graphicCommandBuffer
+	)
+		.WaitSemaphore(
+			1, &m_imageAvailableSemaphore,
+			waitStages
+		)
+		.SignalSemaphore(
+			1, &m_renderFinishedSemaphore
+		);
+	m_graphicQueue.Submit(
+		1, &submitInfo, m_inFlightFence);
+
+	auto presentInfo = PresentInfo();
+	uint32_t imageIndices[] = {_imageIdx};
+	SwapChainHandle swapchains[] = {m_swapChain.GetSwapChain()};
+	presentInfo.SwapChainImages(
+		1, swapchains, imageIndices
+	);
+	SemaphoreHandle semaphores[] = {
+		m_renderFinishedSemaphore
+	};
+	presentInfo.WaitSemaphore(
+		_countof(semaphores), semaphores
+	);
+	m_presentQueue.Present(&presentInfo);
 }
 
 bool VulkanWrapper::Application::InitPipeline(
@@ -335,7 +381,7 @@ bool VulkanWrapper::Application::InitPipeline(
 		.MultisampleState(&multiSampling)
 		.PipelineLayout(m_pipelineLayout)
 		.RasterizationStatetexInputState(&rasterizationState)
-		.RenderPass(m_renderPass, _subpass.GetRef())
+		.RenderPass(m_renderPass, _subpass.GetSubpassIndex())
 		.ShaderStages(&shaderStage[0], _countof(shaderStage))
 		.VertexInputState(&vertexInput)
 		.ViewportState(&viewport);

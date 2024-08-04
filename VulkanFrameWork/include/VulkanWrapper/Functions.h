@@ -10,5 +10,6 @@ namespace VulkanWrapper{
 		CommandBufferAllocateInfo const& _createInfo,
 		CommandBufferHandle* _outHandles
 	);
+	
 }
 #include "VulkanWrapper/Functions.inl"

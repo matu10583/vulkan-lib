@@ -47,7 +47,7 @@ namespace VulkanWrapper{
 			m_sparseId = UINT32_MAX;
 			m_pParent = nullptr;
 		}
-		uint32_t GetRef()const;
+		uint32_t GetSubpassIndex()const;
 		uint32_t GetId()const;
 
 		SubpassHandle& InputAttachments(AttachmentHandle* _pRefs, uint32_t _count);
@@ -69,6 +69,15 @@ public:
 	~RenderPassCreateInfoBuilder();
 	AttachmentHandle AddColorAttachment();
 	SubpassHandle AddSubpass();
+	RenderPassCreateInfoBuilder&
+		AddDependency(
+			SubpassHandle _srcSubpass,
+			VkPipelineStageFlags _srcStageMasks,
+			VkAccessFlags _scrAccessFlags,
+			SubpassHandle _dstSubpass,
+			VkPipelineStageFlags _dstStageMasks,
+			VkAccessFlags _dstAccessFlags
+			);
 	VkRenderPassCreateInfo Build();
 
 private:

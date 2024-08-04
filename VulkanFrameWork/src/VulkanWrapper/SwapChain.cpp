@@ -57,6 +57,11 @@ namespace VulkanWrapper{
             );
         }
 
+        SwapChainHandle SwapChain::GetSwapChain()
+        {
+            return m_swapChain;
+        }
+
         SwapChain::SwapChain()
                 {
 

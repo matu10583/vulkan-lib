@@ -20,6 +20,7 @@ namespace VulkanWrapper{
 			uint32_t layerCount
 		);
 		void Destroy();
+		void WaitIdle();
 
 		void GetDeviceQueue(uint32_t _family_idx, uint32_t _idx, QueueHandle* _pHandle);
 	private:
@@ -41,7 +42,7 @@ public:
 		char const** ppEnabledLayers,
 		uint32_t layerCount
 	);
-
+	void WaitIdle();
 	void Destroy();
 	void GetQueue(uint32_t _family_idx, uint32_t _idx, Queue* _pQueue);
 	DeviceHandle GetHandle()const;
