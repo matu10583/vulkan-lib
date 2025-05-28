@@ -21,17 +21,17 @@ struct IsInvocable<R(*)(Args...)> {
 	static const bool value = true;
 };
 
-template<typename Func, typename... Args>
-struct IsInvocable {
-private:
-	template<typename F, typename... A>
-	static decltype(std::declval(F)(std::declval(A)...), std::true_type) test(int);
-
-	template<typename F, typename... A>
-	static std::false_type test(...);
-public:
-	static const bool value = decltype(test<Func, Args...>(0))::value;
-};
+//template<typename Func, typename... Args>
+//struct IsInvocable {
+//private:
+//	template<typename F, typename... A>
+//	static decltype(std::declval(F)(std::declval(A)...), std::true_type) test(int);
+//
+//	template<typename F, typename... A>
+//	static std::false_type test(...);
+//public:
+//	static const bool value = decltype(test<Func, Args...>(0))::value;
+//};
 
 template<typename Func>
 struct ArgCounter;

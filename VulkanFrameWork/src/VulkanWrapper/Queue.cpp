@@ -18,8 +18,9 @@ namespace VulkanWrapper{
         {
             _presentInfo->pResults = nullptr;
 #ifdef _DEBUG
-            _presentInfo->pResults = 
-                new VkResult[_presentInfo->swapchainCount];
+            //リークしてたのでコメントアウト。複数のscで成功、失敗を受け取るなら必要だが現時点ではいらない
+            //_presentInfo->pResults = 
+            //    new VkResult[_presentInfo->swapchainCount];
 #endif // _DEBUG
             VEXCEPT(
                 vkQueuePresentKHR(
@@ -27,9 +28,9 @@ namespace VulkanWrapper{
                 )
             );
 #ifdef _DEBUG
-            for (uint32_t i = 0; i < _presentInfo->swapchainCount; i++) {
-                VEXCEPT(_presentInfo->pResults[i]);
-            }
+            //for (uint32_t i = 0; i < _presentInfo->swapchainCount; i++) {
+            //    VEXCEPT(_presentInfo->pResults[i]);
+            //}
 #endif // _DEBUG
 
 

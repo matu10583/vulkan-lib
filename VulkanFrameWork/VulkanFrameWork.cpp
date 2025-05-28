@@ -9,6 +9,9 @@
 
 #define MAX_LOADSTRING 100
 
+//メインアプリケーション
+VulkanWrapper::Application g_app{};
+
 // グローバル変数:
 HINSTANCE g_hInst;                                // 現在のインターフェイス
 HWND g_hWnd;
@@ -44,20 +47,20 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
     MSG msg = {};
-    VulkanWrapper::Application app{};
-    app.Init(g_hWnd, hInstance);
+    g_app.Init(g_hWnd, hInstance);
     // メイン メッセージ ループ:
     while (msg.message != WM_QUIT)
     {
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
+            if (msg.message == WM_QUIT) break;
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
         //update
-        app.Update();
+        g_app.Update();
     }
-    app.Term();
+    g_app.Term();
     return (int) msg.wParam;
 }
 
@@ -157,6 +160,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
     case WM_DESTROY:
+        g_app.DoUpdate(false);
         PostQuitMessage(0);
         break;
     default:

@@ -29,6 +29,7 @@ namespace VulkanWrapper {
 		bool Init(HWND _hwnd, HINSTANCE _hinst);
 		void Term();
 		void Update();
+		void WaitIdle();
 
 		// IApplication ÇâÓÇµÇƒåpè≥Ç≥ÇÍÇ‹ÇµÇΩ
 		uint32_t VkAppVersion() const override;
@@ -38,6 +39,7 @@ namespace VulkanWrapper {
 		char const* VkApplicationName() const override;
 
 		char const* VkEngineName() const override;
+		void DoUpdate(bool _flg);
 
 	private:
 		void Draw();
@@ -69,6 +71,7 @@ namespace VulkanWrapper {
 		SemaphoreHandle m_renderFinishedSemaphore;
 		FenceHandle m_inFlightFence;
 
+		bool m_doUpdate;
 	};
 }
 

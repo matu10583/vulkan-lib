@@ -25,6 +25,7 @@ namespace {
 }
 
 VulkanWrapper::Application::Application()
+	:m_doUpdate(true)
 {
 }
 
@@ -210,7 +211,13 @@ void VulkanWrapper::Application::Term()
 
 void VulkanWrapper::Application::Update()
 {
+	if (!m_doUpdate) return;
 	Draw();
+}
+
+void VulkanWrapper::Application::WaitIdle() 
+{
+	m_device.WaitIdle();
 }
 
 uint32_t VulkanWrapper::Application::VkAppVersion() const
@@ -231,6 +238,11 @@ char const* VulkanWrapper::Application::VkApplicationName() const
 char const* VulkanWrapper::Application::VkEngineName() const
 {
     return "No Engine";
+}
+
+void VulkanWrapper::Application::DoUpdate(bool _flg)
+{
+	m_doUpdate = _flg;
 }
 
 void VulkanWrapper::Application::Draw()
